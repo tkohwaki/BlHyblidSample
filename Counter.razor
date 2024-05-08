@@ -1,0 +1,21 @@
+﻿@page "/counter"
+@inject IHostInterface HostIF
+
+<h1>Counter</h1>
+
+<p>Current count: @HostIF.Count</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    protected override void OnInitialized() {
+        // Componentの再描画メソッドを設定
+        HostIF.ComponentRefresh = (Action)(()=>StateHasChanged());
+    } 
+
+    private void IncrementCount() {
+        // カウントアップした後、ホスト側へイベント通知
+        HostIF.Count++;
+        HostIF.ExecClientEvent(this,new EventArgs());
+    }
+}
